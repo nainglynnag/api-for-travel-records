@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+// For query string parsing
+app.set('query parser', 'extended');
+
 const dotenv = require("dotenv");
 dotenv.config();
 
