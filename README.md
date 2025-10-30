@@ -35,12 +35,14 @@ This project demonstrates how to build RESTful APIs using **Express**, **MongoDB
 
 The project structure is organized to separate concerns, making it scalable and easy to maintain.
 
+```bash
 api-for-travel-records/
 ├── index.js              # Main application entry point
-├── middlewares/          # Custom middleware 
+├── middlewares/          # Custom middlewares 
 ├── routes/               # API endpoint 
 ├── .env                  # Private environment 
 └── .env.example          # Template for required environment variables
+```
 
 ## 📘 API Endpoints
 ### Travel Records Management
