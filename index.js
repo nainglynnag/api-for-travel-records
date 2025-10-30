@@ -28,7 +28,30 @@ app.set('query parser', 'extended');
 const dotenv = require("dotenv");
 dotenv.config();
 
-const routes = require("./routes/records");
+// JWT
+const jwt = require("jsonwebtoken");
+
+// Auth Middlewares
+function auth (req,res,next) {
+  const authHeader = req.headers['authorization'];
+  
+  if (!authHeader) return res.sendStatus(401);
+  
+  // Check if the token is valid
+  const [type, token] = authHeader.split(' ');
+  if (type !== "Bearer") return res.sendStatus(401);
+  
+  const secret = process.env.JWT_SECRET;
+  
+  jwt.verify(token, secret, (err, data) => {
+    if (err) return res.sendStatus(401);
+    next();
+  });
+  
+}
+
+const authRoutes = require("./routes/users");
+const recordRoutes = require("./routes/records");
 
 const bodyParser = require("body-parser");
 
@@ -36,7 +59,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // API routes
-app.use("/api/v1", routes)
+app.use("/api/v1", authRoutes)
+app.use("/api/v1/records", auth, recordRoutes)
 
 // Server run
 const PORT = 8000;

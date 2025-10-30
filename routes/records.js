@@ -7,7 +7,7 @@ const mongojs = require("mongojs");
 const db = mongojs(process.env.MONGO_URL, ["records"]);
 
 // GET method
-router.get("/records", (req, res) => {
+router.get("/", (req, res) => {
   // For filters and pagination
   const options = req.query;
 
@@ -51,7 +51,7 @@ router.get("/records", (req, res) => {
 // Check https://github.com/validatorjs/validator.js#validators for more validators
 
 router.post(
-  "/records",
+  "/",
   [
     body("name").not().isEmpty(),
     body("nrc").not().isEmpty(),
@@ -76,7 +76,7 @@ router.post(
 
       const _id = data._id;
 
-      res.append("Location", "/api/v1/records/" + _id);
+      res.append("Location", "/api/v1/" + _id);
       return res.status(201).json({ meta: { _id }, data });
     });
   },
@@ -84,7 +84,7 @@ router.post(
 
 // PUT method
 router.put(
-  "/records/:id",
+  "/:id",
   [
     param("id").isMongoId(),
 
@@ -130,7 +130,7 @@ router.put(
 );
 
 // PATCH method
-router.patch("/records/:id", [param("id").isMongoId()], (req, res) => {
+router.patch("/:id", [param("id").isMongoId()], (req, res) => {
   const _id = req.params.id;
 
   db.records.count({ _id: mongojs.ObjectId(_id) }, function (err, count) {
@@ -158,7 +158,7 @@ router.patch("/records/:id", [param("id").isMongoId()], (req, res) => {
 
 // DELETE method
 router.delete(
-  "/records/:id",[param("id").isMongoId()],
+  "/:id",[param("id").isMongoId()],
   (req, res) => {
     const errors = validationResult(req);
     
