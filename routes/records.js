@@ -6,6 +6,8 @@ const { body, param, validationResult } = require("express-validator");
 const mongojs = require("mongojs");
 const db = mongojs(process.env.MONGO_URL, ["records"]);
 
+const { isAdmin } = require("../middlewares/auth.middleware");
+
 // GET method
 router.get("/", (req, res) => {
   // For filters and pagination
@@ -85,7 +87,7 @@ router.post(
 // PUT method
 router.put(
   "/:id",
-  [
+  isAdmin ,[
     param("id").isMongoId(),
 
     // req body validations
@@ -130,7 +132,7 @@ router.put(
 );
 
 // PATCH method
-router.patch("/:id", [param("id").isMongoId()], (req, res) => {
+router.patch("/:id", isAdmin ,[param("id").isMongoId()], (req, res) => {
   const _id = req.params.id;
 
   db.records.count({ _id: mongojs.ObjectId(_id) }, function (err, count) {
@@ -158,7 +160,7 @@ router.patch("/:id", [param("id").isMongoId()], (req, res) => {
 
 // DELETE method
 router.delete(
-  "/:id",[param("id").isMongoId()],
+  "/:id", isAdmin ,[param("id").isMongoId()],
   (req, res) => {
     const errors = validationResult(req);
     

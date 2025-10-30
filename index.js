@@ -29,26 +29,28 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // JWT
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 // Auth Middlewares
-function auth (req,res,next) {
-  const authHeader = req.headers['authorization'];
+// function auth (req,res,next) {
+//   const authHeader = req.headers['authorization'];
   
-  if (!authHeader) return res.sendStatus(401);
+//   if (!authHeader) return res.sendStatus(401);
   
-  // Check if the token is valid
-  const [type, token] = authHeader.split(' ');
-  if (type !== "Bearer") return res.sendStatus(401);
+//   // Check if the token is valid
+//   const [type, token] = authHeader.split(' ');
+//   if (type !== "Bearer") return res.sendStatus(401);
   
-  const secret = process.env.JWT_SECRET;
+//   const secret = process.env.JWT_SECRET;
   
-  jwt.verify(token, secret, (err, data) => {
-    if (err) return res.sendStatus(401);
-    next();
-  });
+//   jwt.verify(token, secret, (err, data) => {
+//     if (err) return res.sendStatus(401);
+//     next();
+//   });
   
-}
+// }
+
+const { auth} = require("./middlewares/auth.middleware");
 
 const authRoutes = require("./routes/users");
 const recordRoutes = require("./routes/records");
